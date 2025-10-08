@@ -1,0 +1,17 @@
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\bin\Debug\net8.0\CareNest_Review.Application.deps.json
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\bin\Debug\net8.0\CareNest_Review.Application.dll
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\bin\Debug\net8.0\CareNest_Review.Application.pdb
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\bin\Debug\net8.0\CareNest_Review.Domain.dll
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\bin\Debug\net8.0\Shared.dll
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\bin\Debug\net8.0\CareNest_Review.Domain.pdb
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\bin\Debug\net8.0\Shared.pdb
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\obj\Debug\net8.0\CareNest_Review.Application.csproj.AssemblyReference.cache
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\obj\Debug\net8.0\CareNest_Review.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\obj\Debug\net8.0\CareNest_Review.Application.AssemblyInfoInputs.cache
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\obj\Debug\net8.0\CareNest_Review.Application.AssemblyInfo.cs
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\obj\Debug\net8.0\CareNest_Review.Application.csproj.CoreCompileInputs.cache
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\obj\Debug\net8.0\CareNest.8CD17AF6.Up2Date
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\obj\Debug\net8.0\CareNest_Review.Application.dll
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\obj\Debug\net8.0\refint\CareNest_Review.Application.dll
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\obj\Debug\net8.0\CareNest_Review.Application.pdb
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Application\obj\Debug\net8.0\ref\CareNest_Review.Application.dll

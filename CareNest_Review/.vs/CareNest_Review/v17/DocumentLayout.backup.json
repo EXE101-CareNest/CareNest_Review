@@ -1,0 +1,105 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\CareNest\\CareNest_Review\\CareNest_Review\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{BA9DB2D2-81EC-4484-BBFD-AE692F9B2081}|CareNest_Review.API\\CareNest_Review.API.csproj|d:\\carenest\\carenest_review\\carenest_review\\carenest_review.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BA9DB2D2-81EC-4484-BBFD-AE692F9B2081}|CareNest_Review.API\\CareNest_Review.API.csproj|solutionrelative:carenest_review.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{352B97DD-4E50-4D8B-9756-EF34E787DD60}|CareNest_Review.Infrastructure\\CareNest_Review.Infrastructure.csproj|d:\\carenest\\carenest_review\\carenest_review\\carenest_review.infrastructure\\apiendpoints\\shopendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{352B97DD-4E50-4D8B-9756-EF34E787DD60}|CareNest_Review.Infrastructure\\CareNest_Review.Infrastructure.csproj|solutionrelative:carenest_review.infrastructure\\apiendpoints\\shopendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{44416D7D-8C37-4C52-B542-82457A98C13A}|CareNest_Review.Domain\\CareNest_Review.Domain.csproj|d:\\carenest\\carenest_review\\carenest_review\\carenest_review.domain\\carenest_review.domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{44416D7D-8C37-4C52-B542-82457A98C13A}|CareNest_Review.Domain\\CareNest_Review.Domain.csproj|solutionrelative:carenest_review.domain\\carenest_review.domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BE9A648-CCD5-42DA-B969-583F4A732BB5}|CareNest_Review.Application\\CareNest_Review.Application.csproj|d:\\carenest\\carenest_review\\carenest_review\\carenest_review.application\\carenest_review.application.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{7BE9A648-CCD5-42DA-B969-583F4A732BB5}|CareNest_Review.Application\\CareNest_Review.Application.csproj|solutionrelative:carenest_review.application\\carenest_review.application.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA9DB2D2-81EC-4484-BBFD-AE692F9B2081}|CareNest_Review.API\\CareNest_Review.API.csproj|d:\\carenest\\carenest_review\\carenest_review\\carenest_review.api\\carenest_review.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{BA9DB2D2-81EC-4484-BBFD-AE692F9B2081}|CareNest_Review.API\\CareNest_Review.API.csproj|solutionrelative:carenest_review.api\\carenest_review.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\CareNest\\CareNest_Review\\CareNest_Review\\CareNest_Review.API\\Program.cs",
+              "RelativeDocumentMoniker": "CareNest_Review.API\\Program.cs",
+              "ToolTip": "D:\\CareNest\\CareNest_Review\\CareNest_Review\\CareNest_Review.API\\Program.cs",
+              "RelativeToolTip": "CareNest_Review.API\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T03:58:08.345Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ShopEndpoints.cs",
+              "DocumentMoniker": "D:\\CareNest\\CareNest_Review\\CareNest_Review\\CareNest_Review.Infrastructure\\ApiEndpoints\\ShopEndpoints.cs",
+              "RelativeDocumentMoniker": "CareNest_Review.Infrastructure\\ApiEndpoints\\ShopEndpoints.cs",
+              "ToolTip": "D:\\CareNest\\CareNest_Review\\CareNest_Review\\CareNest_Review.Infrastructure\\ApiEndpoints\\ShopEndpoints.cs",
+              "RelativeToolTip": "CareNest_Review.Infrastructure\\ApiEndpoints\\ShopEndpoints.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-08T03:54:36.75Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CareNest_Review.Domain",
+              "DocumentMoniker": "D:\\CareNest\\CareNest_Review\\CareNest_Review\\CareNest_Review.Domain\\CareNest_Review.Domain.csproj",
+              "RelativeDocumentMoniker": "CareNest_Review.Domain\\CareNest_Review.Domain.csproj",
+              "ToolTip": "D:\\CareNest\\CareNest_Review\\CareNest_Review\\CareNest_Review.Domain\\CareNest_Review.Domain.csproj",
+              "RelativeToolTip": "CareNest_Review.Domain\\CareNest_Review.Domain.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-10-08T03:53:58.19Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CareNest_Review.API",
+              "DocumentMoniker": "D:\\CareNest\\CareNest_Review\\CareNest_Review\\CareNest_Review.API\\CareNest_Review.API.csproj",
+              "RelativeDocumentMoniker": "CareNest_Review.API\\CareNest_Review.API.csproj",
+              "ToolTip": "D:\\CareNest\\CareNest_Review\\CareNest_Review\\CareNest_Review.API\\CareNest_Review.API.csproj",
+              "RelativeToolTip": "CareNest_Review.API\\CareNest_Review.API.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-10-08T03:52:47.937Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CareNest_Review.Application",
+              "DocumentMoniker": "D:\\CareNest\\CareNest_Review\\CareNest_Review\\CareNest_Review.Application\\CareNest_Review.Application.csproj",
+              "RelativeDocumentMoniker": "CareNest_Review.Application\\CareNest_Review.Application.csproj",
+              "ToolTip": "D:\\CareNest\\CareNest_Review\\CareNest_Review\\CareNest_Review.Application\\CareNest_Review.Application.csproj",
+              "RelativeToolTip": "CareNest_Review.Application\\CareNest_Review.Application.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-10-08T03:51:31.193Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
