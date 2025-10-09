@@ -13,3 +13,4 @@ D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Domain\obj\Debug\net
 D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Domain\obj\Debug\net8.0\refint\CareNest_Review.Domain.dll
 D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Domain\obj\Debug\net8.0\CareNest_Review.Domain.pdb
 D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Domain\obj\Debug\net8.0\ref\CareNest_Review.Domain.dll
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Domain\obj\Debug\net8.0\CareNest_Review.Domain.sourcelink.json

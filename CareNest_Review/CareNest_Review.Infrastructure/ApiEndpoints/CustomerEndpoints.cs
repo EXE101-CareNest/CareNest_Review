@@ -2,7 +2,6 @@
 {
     public class CustomerEndpoints
     {
-        public static string Create() => "/api/appointmentdetail";
-        public static string GetByAppointmentIds(string? id) => $"/api/appointmentdetail?pageIndex=1&pageSize=100&sortDirection=asc&searchTerm={id}";
+        public static string GetById(string id) => $"/api/admin/accounts/{id}";
     }
 }

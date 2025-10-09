@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CareNest_Review.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+44387f168fca9695449ed41e3e21e6aba03c8a42")]
 [assembly: System.Reflection.AssemblyProductAttribute("CareNest_Review.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CareNest_Review.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

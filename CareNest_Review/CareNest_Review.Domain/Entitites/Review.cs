@@ -7,8 +7,8 @@ namespace CareNest_Review.Domain.Entitites
         public string? CustomerId { get; set; }
         public string? ItemDetailId { get; set; }
 
-        public double Rating { get; set; } // tổng tiền
-        public string? Contents { get; set; } // phương thức thanh toán
+        public double Rating { get; set; }
+        public string? Contents { get; set; }
         public string? ImgUrl { get; set; } // ghi chú
         public int Type { get; set; }
     }

@@ -2,7 +2,6 @@
 using CareNest_Review.Application.Features.Commands.Create;
 using CareNest_Review.Application.Features.Commands.Delete;
 using CareNest_Review.Application.Features.Commands.Update;
-using CareNest_Review.Application.Features.Commands.UpdateTotalAmount;
 using CareNest_Review.Application.Features.Queries.GetAllPaging;
 using CareNest_Review.Application.Features.Queries.GetById;
 using CareNest_Review.Application.Interfaces.CQRS;
@@ -51,7 +50,7 @@ namespace CareNest_Review.API.Controllers
                 Status = status,
                 CustomerId = customerId
             };
-            var result = await _dispatcher.DispatchQueryAsync<GetAllPagingQuery, PageResult<AppointmentResponse>>(query);
+            var result = await _dispatcher.DispatchQueryAsync<GetAllPagingQuery, PageResult<ReviewResponse>>(query);
             return this.OkResponse(result, MessageConstant.SuccessGet);
         }
 
@@ -64,7 +63,7 @@ namespace CareNest_Review.API.Controllers
         public async Task<IActionResult> GetById(string id)
         {
             var query = new GetByIdQuery() { Id = id };
-            AppointmentResponse result = await _dispatcher.DispatchQueryAsync<GetByIdQuery, AppointmentResponse>(query);
+            ReviewResponse result = await _dispatcher.DispatchQueryAsync<GetByIdQuery, ReviewResponse>(query);
             return this.OkResponse(result, MessageConstant.SuccessGet);
         }
 
@@ -76,7 +75,7 @@ namespace CareNest_Review.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCommand command)
         {
-            AppointmentResponse result = await _dispatcher.DispatchAsync<CreateCommand, AppointmentResponse>(command);
+            ReviewResponse result = await _dispatcher.DispatchAsync<CreateCommand, ReviewResponse>(command);
 
             return this.OkResponse(result, MessageConstant.SuccessCreate);
         }
@@ -105,7 +104,7 @@ namespace CareNest_Review.API.Controllers
                 ShopId = request.ShopId,
                 Status = request.Status
             };
-            AppointmentResponse result = await _dispatcher.DispatchAsync<UpdateCommand, AppointmentResponse>(command);
+            ReviewResponse result = await _dispatcher.DispatchAsync<UpdateCommand, ReviewResponse>(command);
 
             return this.OkResponse(result, MessageConstant.SuccessUpdate);
         }
@@ -136,7 +135,7 @@ namespace CareNest_Review.API.Controllers
                 Id = id,
                 TotalAmount = totalAmount
             };
-            AppointmentResponse result = await _dispatcher.DispatchAsync<UpdateTotalAmountCommand, AppointmentResponse>(command);
+            ReviewResponse result = await _dispatcher.DispatchAsync<UpdateTotalAmountCommand, ReviewResponse>(command);
 
             return this.OkResponse(result, MessageConstant.SuccessUpdate);
         }

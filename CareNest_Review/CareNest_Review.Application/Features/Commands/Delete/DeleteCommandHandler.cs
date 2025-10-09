@@ -17,11 +17,11 @@ namespace CareNest_Review.Application.Features.Commands.Delete
 
         public async Task HandleAsync(DeleteCommand command)
         {
-            // Lấy appointment theo ID
-            Review? appointment = await _unitOfWork.GetRepository<Review>().GetByIdAsync(command.Id)
+            // Lấy review theo ID
+            Review? review = await _unitOfWork.GetRepository<Review>().GetByIdAsync(command.Id)
                                               ?? throw new BadRequestException("Id: " + MessageConstant.NotFound);
 
-            _unitOfWork.GetRepository<Review>().Delete(appointment);
+            _unitOfWork.GetRepository<Review>().Delete(review);
 
             await _unitOfWork.SaveAsync();
         }

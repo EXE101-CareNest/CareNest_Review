@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CareNest_Review.Infrastructure.ApiEndpoints
+﻿namespace CareNest_Review.Infrastructure.ApiEndpoints
 {
-    internal class ProductDetailEndpoints
+    public class ProductDetailEndpoints
     {
+        public static string GetById(string id) => $"/api/ProductDetails/{id}";
     }
 }

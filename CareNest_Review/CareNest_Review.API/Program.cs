@@ -4,7 +4,6 @@ using CareNest_Review.Application.Common.Options;
 using CareNest_Review.Application.Features.Commands.Create;
 using CareNest_Review.Application.Features.Commands.Delete;
 using CareNest_Review.Application.Features.Commands.Update;
-using CareNest_Review.Application.Features.Commands.UpdateTotalAmount;
 using CareNest_Review.Application.Features.Queries.GetAllPaging;
 using CareNest_Review.Application.Features.Queries.GetById;
 using CareNest_Review.Application.Interfaces.CQRS;
@@ -92,13 +91,12 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 //command
-builder.Services.AddScoped<ICommandHandler<CreateCommand, AppointmentResponse>, CreateCommandHandler>();
-builder.Services.AddScoped<ICommandHandler<UpdateCommand, AppointmentResponse>, UpdateCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<CreateCommand, ReviewResponse>, CreateCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<UpdateCommand, ReviewResponse>, UpdateCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteCommand>, DeleteCommandHandler>();
-builder.Services.AddScoped<ICommandHandler<UpdateTotalAmountCommand, AppointmentResponse>, UpdateTotalAmountCommandHandler>();
 //query
-builder.Services.AddScoped<IQueryHandler<GetAllPagingQuery, PageResult<AppointmentResponse>>, GetAllPagingQueryHandler>();
-builder.Services.AddScoped<IQueryHandler<GetByIdQuery, AppointmentResponse>, GetByIdQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetAllPagingQuery, PageResult<ReviewResponse>>, GetAllPagingQueryHandler>();
+builder.Services.AddScoped<IQueryHandler<GetByIdQuery, ReviewResponse>, GetByIdQueryHandler>();
 
 builder.Services.Configure<RouteOptions>(options =>
 {
@@ -109,9 +107,9 @@ builder.Services.Configure<APIServiceOption>(builder.Configuration.GetSection("A
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddScoped<IShopService, ShopService>();
+builder.Services.AddScoped<IServiceDetailService, ServiceDetailService>();
 builder.Services.AddScoped<IAPIService, APIService>();
-builder.Services.AddScoped<IAppointmentDetailService, AppointmentDetailService>();
+builder.Services.AddScoped<IProductDetailService, ProductDetailService>();
 
 // Add authentication services
 builder.Services.AddAuthentication(options =>

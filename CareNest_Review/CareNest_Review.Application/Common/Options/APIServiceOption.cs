@@ -2,8 +2,9 @@
 {
     public class APIServiceOption
     {
-        public string BaseUrlShop { get; set; } = string.Empty;
-        public string BaseUrlAppointmentDetail { get; set; } = string.Empty;
+        public string BaseUrlProductService { get; set; } = string.Empty;
+        public string BaseUrlServiceDetail { get; set; } = string.Empty;
+        public string BaseUrlAccount { get; set; } = string.Empty;
     }
 }
 

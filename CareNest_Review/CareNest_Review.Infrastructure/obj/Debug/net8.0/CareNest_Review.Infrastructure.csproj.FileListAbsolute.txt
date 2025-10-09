@@ -19,3 +19,4 @@ D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Infrastructure\obj\D
 D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Infrastructure\obj\Debug\net8.0\CareNest_Review.Infrastructure.pdb
 D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Infrastructure\obj\Debug\net8.0\CareNest_Review.Infrastructure.genruntimeconfig.cache
 D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Infrastructure\obj\Debug\net8.0\ref\CareNest_Review.Infrastructure.dll
+D:\CareNest\CareNest_Review\CareNest_Review\CareNest_Review.Infrastructure\obj\Debug\net8.0\CareNest_Review.Infrastructure.sourcelink.json

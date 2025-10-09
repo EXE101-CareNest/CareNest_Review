@@ -8,37 +8,45 @@ using System.Linq.Expressions;
 
 namespace CareNest_Review.Application.Features.Queries.GetAllPaging
 {
-    public class GetAllPagingQueryHandler : IQueryHandler<GetAllPagingQuery, PageResult<AppointmentResponse>>
+    public class GetAllPagingQueryHandler : IQueryHandler<GetAllPagingQuery, PageResult<ReviewResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAppointmentDetailService _appointmentDetailService;
-        private readonly IShopService _shopService;
+        private readonly IProductDetailService _appointmentDetailService;
+        private readonly IServiceDetailService _shopService;
 
-        public GetAllPagingQueryHandler(IUnitOfWork unitOfWork, IAppointmentDetailService appointmentDetailService, IShopService shopService)
+        public GetAllPagingQueryHandler(IUnitOfWork unitOfWork, IProductDetailService appointmentDetailService, IServiceDetailService shopService)
         {
             _unitOfWork = unitOfWork;
             _appointmentDetailService = appointmentDetailService;
             _shopService = shopService;
         }
 
-        public async Task<PageResult<AppointmentResponse>> HandleAsync(GetAllPagingQuery query)
+        public async Task<PageResult<ReviewResponse>> HandleAsync(GetAllPagingQuery query)
         {
             Expression<Func<Review, bool>>? predicate = null;
             if (!string.IsNullOrWhiteSpace(query.CustomerId))
             {
                 predicate = ad => ad.CustomerId.Contains(query.CustomerId);
             }
-            if (!string.IsNullOrWhiteSpace(query.Status))
+            if (!string.IsNullOrWhiteSpace(query.ProductDetailId))
             {
-                predicate = ad => ad.Status.Equals(query.Status);
+                predicate = ad => ad.ItemDetailId.Contains(query.ProductDetailId) && ad.Type == 2;
             }
-            var selector = ObjectMapperExtensions.CreateMapExpression<Review, AppointmentResponse>();
+            if (!string.IsNullOrWhiteSpace(query.ServiceDetailId))
+            {
+                predicate = ad => ad.ItemDetailId.Contains(query.ServiceDetailId) && ad.Type == 1;
+            }
+            if (!string.IsNullOrWhiteSpace(query.Type))
+            {
+                predicate = ad => ad.Type.Equals(query.Type);
+            }
+            var selector = ObjectMapperExtensions.CreateMapExpression<Review, ReviewResponse>();
 
             var orderByFunc = GetOrderByFunc(query.SortColumn, query.SortDirection);
 
             var totalItems = await _unitOfWork.GetRepository<Review>().CountAsync(null);
 
-            IEnumerable<AppointmentResponse> appointments = await _unitOfWork.GetRepository<Review>().FindAsync(
+            IEnumerable<ReviewResponse> appointments = await _unitOfWork.GetRepository<Review>().FindAsync(
                 predicate: predicate,
                 orderBy: orderByFunc,
                 selector: selector,
@@ -47,43 +55,8 @@ namespace CareNest_Review.Application.Features.Queries.GetAllPaging
 
             var appointmentsList = appointments.ToList();
 
-            // Load appointment details for each appointment
-            foreach (var appointment in appointmentsList)
-            {
-                if (appointment.Id != null)
-                {
-                    try
-                    {
-                        var details = await _appointmentDetailService.GetAppointmentDetailsAsync(appointment.Id);
-                        appointment.Details = details;
-                        Console.WriteLine($"Found {details.Count} details for appointment {appointment.Id}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error loading details for appointment {appointment.Id}: {ex.Message}");
-                        appointment.Details = new List<AppointmentDetailDto>();
-                    }
-                }
-            }
-            // Load shop for each appointment
-            foreach (var appointment in appointmentsList)
-            {
-                if (appointment.Id != null)
-                {
-                    try
-                    {
-                        var details = await _shopService.GetShopById(appointment.ShopId);
-                        appointment.ShopName = details.Data.Data.Name;
-                        Console.WriteLine($"Shop for appointment {appointment.Id}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error loading details for shop {appointment.Id}: {ex.Message}");
-                        appointment.ShopName = null;
-                    }
-                }
-            }
-            return new PageResult<AppointmentResponse>(appointmentsList, totalItems, query.Index, query.PageSize);
+          
+            return new PageResult<ReviewResponse>(appointmentsList, totalItems, query.Index, query.PageSize);
         }
 
 

@@ -19,7 +19,7 @@ namespace CareNest_Review.Infrastructure.Services
         {
             _httpClient = httpClient;
             _option = option.Value;
-            _httpClient.BaseAddress = new Uri(option.Value.BaseUrlShop);
+            _httpClient.BaseAddress = new Uri(option.Value.BaseUrlAccount);
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
@@ -181,8 +181,9 @@ namespace CareNest_Review.Infrastructure.Services
         {
             return serviceType.ToLower() switch
             {
-                "shop" => _option.BaseUrlShop,
-                "appointmentdetail" => _option.BaseUrlAppointmentDetail,
+                "service" => _option.BaseUrlServiceDetail,
+                "product" => _option.BaseUrlProductService,
+                "customer" => _option.BaseUrlAccount,
                 _ => throw new ArgumentException($"Service type '{serviceType}' không hợp lệ!", nameof(serviceType))
             };
         }

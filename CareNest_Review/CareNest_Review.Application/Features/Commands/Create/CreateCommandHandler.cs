@@ -1,5 +1,4 @@
 ﻿using CareNest_Review.Application.DTOs;
-using CareNest_Review.Application.Exceptions.Validators;
 using CareNest_Review.Application.Features.Queries.GetAllPaging;
 using CareNest_Review.Application.Interfaces.CQRS.Commands;
 using CareNest_Review.Application.Interfaces.Services;
@@ -7,122 +6,64 @@ using CareNest_Review.Application.Interfaces.UOW;
 using CareNest_Review.Domain.Entitites;
 using Microsoft.AspNetCore.Http;
 using Shared.Helper;
-using System.Security.Claims;
 
 namespace CareNest_Review.Application.Features.Commands.Create
 {
-    public class CreateCommandHandler : ICommandHandler<CreateCommand, AppointmentResponse>
+    public class CreateCommandHandler : ICommandHandler<CreateCommand, ReviewResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IShopService _shopService;
-        private readonly IAppointmentDetailService _appointmentDetailService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IServiceDetailService _serviceDetailService;
+        private readonly IProductDetailService _productDetailService;
+        private readonly ICustomerService _customerService;
 
-        public CreateCommandHandler(IUnitOfWork unitOfWork, IShopService shopService, IAppointmentDetailService appointmentDetailService, IHttpContextAccessor httpContextAccessor)
+        public CreateCommandHandler(IUnitOfWork unitOfWork, IServiceDetailService serviceDetailService, IProductDetailService productDetailService, ICustomerService customerService)
         {
             _unitOfWork = unitOfWork;
-            _shopService = shopService;
-            _appointmentDetailService = appointmentDetailService;
-            _httpContextAccessor = httpContextAccessor;
+            _serviceDetailService = serviceDetailService;
+            _productDetailService = productDetailService;
+            _customerService = customerService;
         }
 
-        public async Task<AppointmentResponse> HandleAsync(CreateCommand command)
+        public async Task<ReviewResponse> HandleAsync(CreateCommand command)
         {
-            //Validate.ValidateCreate(command);
-
-            // Debug: Kiểm tra HttpContext và User
-            var httpContext = _httpContextAccessor.HttpContext;
-            Console.WriteLine($"HttpContext exists: {httpContext != null}");
-
-            if (httpContext != null)
+            var product = new ProductDetailDTO();
+            var service = new ServiceDetailDTO();
+            if(command.CustomerId != null)
             {
-                Console.WriteLine($"User exists: {httpContext.User != null}");
-                Console.WriteLine($"User Identity exists: {httpContext.User.Identity != null}");
-                Console.WriteLine($"Is Authenticated: {httpContext.User.Identity?.IsAuthenticated}");
-
-                // Kiểm tra Authorization header
-                if (httpContext.Request.Headers.TryGetValue("Authorization", out var authHeader))
-                {
-                    Console.WriteLine($"Authorization Header: {authHeader}");
-                }
-
-                // Lấy và in ra tất cả claims
-                var claims = httpContext.User.Claims;
-                Console.WriteLine("All Claims:");
-                foreach (var claim in claims)
-                {
-                    Console.WriteLine($"Claim Type: {claim.Type}, Value: {claim.Value}");
-                }
-
-                var userRole = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-                var userId = claims.FirstOrDefault(c => c.Type == "userId")?.Value;
-
-                Console.WriteLine($"Found Role: {userRole}");
-                Console.WriteLine($"Found UserId: {userId}");
-
-                // Chỉ gán CustomerId nếu role là 2 và userId có giá trị
-                if (userRole == "ROLE_USER" && !string.IsNullOrEmpty(userId))
-                {
-                    command.CustomerId = userId;
-                }
+                var customer = await _customerService.GetbyId(command.CustomerId);
+            }
+            if (command.Type == 1)
+            {
+                service = await _serviceDetailService.GetById(command.ItemDetailId!);
+            } else if(command.Type == 2)
+            {
+                product = await _productDetailService.GetbyId(command.ItemDetailId!);
+            }
+            else
+            {
+                throw new BadHttpRequestException("Type is invalid. Please select 1: service or 2:product");
             }
 
-            //kiểm tra shop tồn tại
-            var shop = await _shopService.GetShopById(command.ShopId);
-
-            Review appointment = new()
-            {
-                Status = command.Status,
-                CustomerId = command.CustomerId,
-                Note = command.Note,
-                PaymentMethod = command.PaymentMethod,
-                StaffName = command.StaffName,
-                StartTime = command.StartTime,
-                TotalAmount = 0, // Mặc định là 0 khi tạo mới
-                BankId = command.BankId,
-                BankTransactionId = command.BankTransactionId,
-                IsPaid = command.IsPaid,
-                ShopId = shop.Data!.Data!.Id,
-                CreatedAt = TimeHelper.GetUtcNow(),
-                CreatedBy = httpContext?.User?.Claims?.FirstOrDefault(c => c.Type == "userId")?.Value
-            };
-            await _unitOfWork.GetRepository<Review>().AddAsync(appointment);
-            await _unitOfWork.SaveAsync();
-
-            // Create appointment details and collect them\
-
-            decimal totalAmount = new();
-            var createdDetails = new List<AppointmentDetailDto>();
-            if (command.Details != null && command.Details.Any())
-            {
-                foreach (var detail in command.Details)
+                Review review = new()
                 {
-                    var createdDetail = await _appointmentDetailService.CreateAppointmentDetailAsync(appointment.Id, detail);
-                    createdDetails.Add(createdDetail);
-                    totalAmount += createdDetail.TotalAmount;
-                }
-            }
-            
-            appointment.TotalAmount = (double)totalAmount;
-            await _unitOfWork.GetRepository<Review>().UpdateAsync(appointment);
+                    ImgUrl = command.ImgUrl,
+                    Type = command.Type,
+                    Rating = command.Rating,
+                    Contents = command.Contents,
+                    ItemDetailId = command.Type == 2 ? product.Id : service.Id,
+                    CreatedAt = TimeHelper.GetUtcNow(),
+                };
+            await _unitOfWork.GetRepository<Review>().AddAsync(review);
             await _unitOfWork.SaveAsync();
-
-            return new AppointmentResponse
+            return new ReviewResponse
             {
-                Id = appointment.Id,
-                CustomerId = appointment.CustomerId,
-                Note = appointment.Note,
-                PaymentMethod = appointment.PaymentMethod,
-                StaffName = appointment.StaffName,
-                StartTime = appointment.StartTime,
-                TotalAmount = (double)totalAmount,
-                Status = appointment.Status,
-                BankId = appointment.BankId,
-                BankTransactionId = appointment.BankTransactionId,
-                IsPaid = appointment.IsPaid,
-                ShopId = shop.Data!.Data!.Id,
-                ShopName = shop.Data!.Data!.Name,
-                Details = createdDetails
+                Id = review.Id,
+                CustomerId = review.CustomerId,
+                Contents = review.Contents,
+                ImgUrl = review.ImgUrl,
+                ItemDetailId = review.ItemDetailId,
+                Rating = review.Rating,
+                Type = review.Type
             };
         }
     }
