@@ -1,0 +1,19 @@
+services:
+  reviewapi:
+    image: review-api-dev:latest
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8024:8080"
+    container_name: review-api-dev
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      carenest-network:
+        ipv4_address: 192.168.0.27
+
+networks:
+  carenest-network:
+    external: true
