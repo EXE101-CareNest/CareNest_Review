@@ -15,19 +15,22 @@ namespace CareNest_Review.Application.Features.Commands.Create
         private readonly IServiceDetailService _serviceDetailService;
         private readonly IProductDetailService _productDetailService;
         private readonly ICustomerService _customerService;
+        private readonly IOrderService _orderService;
 
-        public CreateCommandHandler(IUnitOfWork unitOfWork, IServiceDetailService serviceDetailService, IProductDetailService productDetailService, ICustomerService customerService)
+        public CreateCommandHandler(IUnitOfWork unitOfWork, IServiceDetailService serviceDetailService, IProductDetailService productDetailService, ICustomerService customerService, IOrderService orderService)
         {
             _unitOfWork = unitOfWork;
             _serviceDetailService = serviceDetailService;
             _productDetailService = productDetailService;
             _customerService = customerService;
+            _orderService = orderService;
         }
 
         public async Task<ReviewResponse> HandleAsync(CreateCommand command)
         {
             var product = new ProductDetailDTO();
             var service = new ServiceDetailDTO();
+            var order = new OrderDetailDTO();
             if(command.CustomerId != null)
             {
                 var customer = await _customerService.GetbyId(command.CustomerId);
@@ -39,9 +42,13 @@ namespace CareNest_Review.Application.Features.Commands.Create
             {
                 product = await _productDetailService.GetbyId(command.ItemDetailId!);
             }
+            else if (command.Type == 3)
+            {
+                order = await _orderService.GetById(command.ItemDetailId!);
+            }
             else
             {
-                throw new BadHttpRequestException("Type is invalid. Please select 1: service or 2:product");
+                throw new BadHttpRequestException("Type is invalid. Please select 1: service, 2: product, or 3: order");
             }
 
                 Review review = new()
@@ -51,7 +58,7 @@ namespace CareNest_Review.Application.Features.Commands.Create
                     Rating = command.Rating,
                     CustomerId = command.CustomerId,
                     Contents = command.Contents,
-                    ItemDetailId = command.Type == 2 ? product.Id : service.Id,
+                    ItemDetailId = command.Type == 1 ? service.Id : command.Type == 2 ? product.Id : order.Id,
                     CreatedAt = TimeHelper.GetUtcNow(),
                 };
             await _unitOfWork.GetRepository<Review>().AddAsync(review);

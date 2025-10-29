@@ -208,6 +208,7 @@ namespace CareNest_Review.Infrastructure.Services
                 "service" => _option.BaseUrlServiceDetail,
                 "product" => _option.BaseUrlProductService,
                 "customer" => _option.BaseUrlAccount,
+                "order" => _option.BaseUrlOrder,
                 _ => throw new ArgumentException($"Service type '{serviceType}' không hợp lệ!", nameof(serviceType))
             };
         }

@@ -32,7 +32,7 @@ namespace CareNest_Review.API.Controllers
         /// <param name="sortDirection"></param>
         /// <param name="ServiceDetailId"></param>
         /// <param name="ProductDetailId"></param>
-        /// <param name="Type">1 là product 2 là service</param>
+        /// <param name="Type">1 = service, 2 = product, 3 = order</param>
         /// <param name="CustomerId"></param>
         /// <returns></returns>
         [HttpGet]

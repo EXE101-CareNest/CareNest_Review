@@ -111,6 +111,7 @@ builder.Services.AddScoped<IServiceDetailService, ServiceDetailService>();
 builder.Services.AddScoped<IAPIService, APIService>();
 builder.Services.AddScoped<IProductDetailService, ProductDetailService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 
 builder.Services.AddScoped<IUseCaseDispatcher, UseCaseDispatcher>();

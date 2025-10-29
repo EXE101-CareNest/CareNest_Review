@@ -5,6 +5,7 @@
         public string BaseUrlProductService { get; set; } = string.Empty;
         public string BaseUrlServiceDetail { get; set; } = string.Empty;
         public string BaseUrlAccount { get; set; } = string.Empty;
+        public string BaseUrlOrder { get; set; } = string.Empty;
     }
 }
 
