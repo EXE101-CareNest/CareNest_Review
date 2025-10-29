@@ -24,6 +24,14 @@ namespace CareNest_Review.Application.Features.Queries.GetAllPaging
         public async Task<PageResult<ReviewResponse>> HandleAsync(GetAllPagingQuery query)
         {
             Expression<Func<Review, bool>>? predicate = null;
+            // Auto-infer Type=3 when Order filters are provided without Type
+            if ((query.OrderIds != null && query.OrderIds.Any()) || !string.IsNullOrWhiteSpace(query.OrderId))
+            {
+                if (query.Type == null)
+                {
+                    query.Type = 3;
+                }
+            }
             if (!string.IsNullOrWhiteSpace(query.CustomerId))
             {
                 predicate = ad => ad.CustomerId.Contains(query.CustomerId);
@@ -35,6 +43,24 @@ namespace CareNest_Review.Application.Features.Queries.GetAllPaging
             if (!string.IsNullOrWhiteSpace(query.ServiceDetailId))
             {
                 predicate = ad => ad.ItemDetailId.Contains(query.ServiceDetailId) && ad.Type == 1;
+            }
+            // Order filters (Type must be 3)
+            if (!string.IsNullOrWhiteSpace(query.OrderId) || (query.OrderIds != null && query.OrderIds.Any()))
+            {
+                var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                if (query.OrderIds != null)
+                {
+                    foreach (var id in query.OrderIds.Where(x => !string.IsNullOrWhiteSpace(x)))
+                    {
+                        set.Add(id);
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(query.OrderId))
+                {
+                    set.Add(query.OrderId);
+                }
+                var list = set.ToList();
+                predicate = ad => list.Contains(ad.ItemDetailId!) && ad.Type == 3;
             }
             if (query.Type != null)
             {

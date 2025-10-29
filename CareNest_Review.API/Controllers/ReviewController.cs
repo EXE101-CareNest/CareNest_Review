@@ -44,9 +44,26 @@ namespace CareNest_Review.API.Controllers
             [FromQuery] string? serviceDetailId = null,
             [FromQuery] string? productDetailId = null,
             [FromQuery] int? type = null,
-            [FromQuery] string? customerId = null
+            [FromQuery] string? customerId = null,
+            [FromQuery] string? orderId = null,
+            [FromQuery] List<string>? orderIds = null,
+            [FromQuery] string? orderIdsCsv = null
             )
         {
+            // Merge orderIds from CSV and repeated query keys
+            var collectedOrderIds = new List<string>();
+            if (orderIds != null && orderIds.Any()) collectedOrderIds.AddRange(orderIds);
+            if (!string.IsNullOrWhiteSpace(orderIdsCsv))
+            {
+                collectedOrderIds.AddRange(orderIdsCsv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
+            }
+            if (collectedOrderIds.Count == 0) collectedOrderIds = null;
+
+            // Auto-infer Type = 3 when only Order filters are provided without Type
+            if ((orderId != null || (collectedOrderIds != null && collectedOrderIds.Count > 0)) && type == null)
+            {
+                type = 3;
+            }
             var query = new GetAllPagingQuery()
             {
                 Index = pageIndex,
@@ -56,7 +73,9 @@ namespace CareNest_Review.API.Controllers
                 CustomerId = customerId,
                 ProductDetailId = productDetailId,
                 ServiceDetailId = serviceDetailId,
-                Type = type
+                Type = type,
+                OrderId = orderId,
+                OrderIds = collectedOrderIds
             };
             var result = await _dispatcher.DispatchQueryAsync<GetAllPagingQuery, PageResult<ReviewResponse>>(query);
             return this.OkResponse(result, MessageConstant.SuccessGet);

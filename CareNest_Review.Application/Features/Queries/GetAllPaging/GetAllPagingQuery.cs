@@ -14,5 +14,7 @@ namespace CareNest_Review.Application.Features.Queries.GetAllPaging
         public string? CustomerId { get; set; }
         public string? ProductDetailId { get; set; }
         public string? ServiceDetailId { get; set; }
+        public string? OrderId { get; set; }
+        public List<string>? OrderIds { get; set; }
     }
 }
