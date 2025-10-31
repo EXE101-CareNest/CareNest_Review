@@ -31,10 +31,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
-// Lấy DatabaseSettings từ configuration
-DatabaseSettings dbSettings = builder.Configuration.GetSection("DatabaseSettings").Get<DatabaseSettings>()!;
+// Lấy DatabaseSettings từ ENV trước, fallback cấu hình
+var config = builder.Configuration;
+DatabaseSettings dbSettings = new DatabaseSettings
+{
+    Ip       = Environment.GetEnvironmentVariable("DB_HOST") ?? config["DatabaseSettings:Ip"],
+    Port     = int.TryParse(Environment.GetEnvironmentVariable("DB_PORT"), out var port)
+                ? port
+                : (config.GetSection("DatabaseSettings").GetValue<int?>("Port") ?? 5432),
+    User     = Environment.GetEnvironmentVariable("DB_USER") ?? config["DatabaseSettings:User"],
+    Password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? config["DatabaseSettings:Password"],
+    Database = Environment.GetEnvironmentVariable("DB_NAME") ?? config["DatabaseSettings:Database"]
+};
 dbSettings.Display();
-string connectionString = dbSettings?.GetConnectionString();
+string connectionString = dbSettings.GetConnectionString() + ";Pooling=true;Maximum Pool Size=5;Minimum Pool Size=0;Timeout=15;";
 
 
 // Đăng ký DbContext với PostgreSQL
@@ -134,7 +144,8 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+var swaggerEnabled = app.Environment.IsDevelopment() || builder.Configuration.GetValue<bool>("Swagger:Enabled");
+if (swaggerEnabled)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -142,7 +153,11 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-    context.Database.Migrate();
+    var runMigrations = Environment.GetEnvironmentVariable("RUN_MIGRATIONS");
+    if (!string.IsNullOrWhiteSpace(runMigrations) && runMigrations.Equals("true", StringComparison.OrdinalIgnoreCase))
+    {
+        context.Database.Migrate();
+    }
 }
 
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
