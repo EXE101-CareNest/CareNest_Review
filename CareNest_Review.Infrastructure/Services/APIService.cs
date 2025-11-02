@@ -19,7 +19,7 @@ namespace CareNest_Review.Infrastructure.Services
         {
             _httpClient = httpClient;
             _option = option.Value;
-            _httpClient.BaseAddress = new Uri(option.Value.BaseUrlAccount);
+            // Không set BaseAddress vì mỗi service type có URL khác nhau, GetBaseUrl đã trả về full URL
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
