@@ -153,10 +153,45 @@ if (swaggerEnabled)
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    
     var runMigrations = Environment.GetEnvironmentVariable("RUN_MIGRATIONS");
     if (!string.IsNullOrWhiteSpace(runMigrations) && runMigrations.Equals("true", StringComparison.OrdinalIgnoreCase))
     {
         context.Database.Migrate();
+    }
+
+    // Log tên các cột thực tế trong database để debug
+    try
+    {
+        using var command = context.Database.GetDbConnection().CreateCommand();
+        command.CommandText = @"
+            SELECT column_name 
+            FROM information_schema.columns 
+            WHERE table_name = 'Appointments' 
+              AND table_schema = 'public'
+            ORDER BY ordinal_position";
+        
+        context.Database.OpenConnection();
+        using var reader = command.ExecuteReader();
+        var columnNames = new List<string>();
+        while (reader.Read())
+        {
+            columnNames.Add(reader.GetString(0));
+        }
+        context.Database.CloseConnection();
+
+        logger.LogInformation("=== COLUMN NAMES IN DATABASE ===");
+        logger.LogInformation("Table: Appointments");
+        foreach (var columnName in columnNames)
+        {
+            logger.LogInformation("  - {ColumnName}", columnName);
+        }
+        logger.LogInformation("=== END COLUMN NAMES ===");
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Error while logging column names: {Message}", ex.Message);
     }
 }
 

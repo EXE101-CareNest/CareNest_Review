@@ -19,33 +19,32 @@ namespace CareNest_Review.Infrastructure.Persistences.Database
             {
                 entity.ToTable("Appointments");
                 
-                // Không map Id vì nó là primary key, EF Core sẽ tự xử lý
-                // Map các cột khác về lowercase để khớp với database PostgreSQL
-                // (PostgreSQL tự động convert tên cột thành lowercase nếu không có quotes)
+                // PostgreSQL thường dùng snake_case cho tên cột
+                // Map các cột về snake_case để khớp với database thực tế
                 entity.Property(e => e.ItemDetailId)
-                    .HasColumnName("itemdetailid");
+                    .HasColumnName("item_detail_id");
                 entity.Property(e => e.CustomerId)
-                    .HasColumnName("customerid");
+                    .HasColumnName("customer_id");
                 entity.Property(e => e.Rating)
                     .HasColumnName("rating");
                 entity.Property(e => e.Contents)
                     .HasColumnName("contents");
                 entity.Property(e => e.ImgUrl)
-                    .HasColumnName("imgurl");
+                    .HasColumnName("img_url");
                 entity.Property(e => e.Type)
                     .HasColumnName("type");
                 entity.Property(e => e.CreatedBy)
-                    .HasColumnName("createdby");
+                    .HasColumnName("created_by");
                 entity.Property(e => e.UpdatedBy)
-                    .HasColumnName("updatedby");
+                    .HasColumnName("updated_by");
                 entity.Property(e => e.DeletedBy)
-                    .HasColumnName("deletedby");
+                    .HasColumnName("deleted_by");
                 entity.Property(e => e.CreatedAt)
-                    .HasColumnName("createdat");
+                    .HasColumnName("created_at");
                 entity.Property(e => e.UpdatedAt)
-                    .HasColumnName("updatedat");
+                    .HasColumnName("updated_at");
                 entity.Property(e => e.DeleteAt)
-                    .HasColumnName("deleteat");
+                    .HasColumnName("delete_at");
             });
         }
     }
