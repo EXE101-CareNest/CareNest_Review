@@ -19,10 +19,9 @@ namespace CareNest_Review.Infrastructure.Persistences.Database
             {
                 entity.ToTable("Appointments");
                 
-                // PostgreSQL tự động convert tên cột thành lowercase nếu không có quotes
-                // Map về tên cột lowercase để khớp với database thực tế
-                entity.Property(e => e.Id)
-                    .HasColumnName("id");
+                // Không map Id vì nó là primary key, EF Core sẽ tự xử lý
+                // Map các cột khác về lowercase để khớp với database PostgreSQL
+                // (PostgreSQL tự động convert tên cột thành lowercase nếu không có quotes)
                 entity.Property(e => e.ItemDetailId)
                     .HasColumnName("itemdetailid");
                 entity.Property(e => e.CustomerId)
