@@ -185,7 +185,7 @@ using (var scope = app.Services.CreateScope())
         command.CommandText = @"
             SELECT column_name 
             FROM information_schema.columns 
-            WHERE table_name = 'Appointments' 
+            WHERE table_name = 'Reviews' 
               AND table_schema = 'public'
             ORDER BY ordinal_position";
         
@@ -199,7 +199,7 @@ using (var scope = app.Services.CreateScope())
         context.Database.CloseConnection();
 
         logger.LogInformation("=== COLUMN NAMES IN DATABASE ===");
-        logger.LogInformation("Table: Appointments");
+        logger.LogInformation("Table: Reviews");
         foreach (var columnName in columnNames)
         {
             logger.LogInformation("  - {ColumnName}", columnName);

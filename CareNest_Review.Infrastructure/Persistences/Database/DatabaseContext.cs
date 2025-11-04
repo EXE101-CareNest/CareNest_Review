@@ -17,7 +17,7 @@ namespace CareNest_Review.Infrastructure.Persistences.Database
             // Config Review entity
             modelBuilder.Entity<Review>(entity =>
             {
-                entity.ToTable("Appointments");
+                entity.ToTable("Reviews");
             });
         }
     }
