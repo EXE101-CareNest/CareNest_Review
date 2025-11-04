@@ -178,6 +178,35 @@ using (var scope = app.Services.CreateScope())
         context.Database.Migrate();
     }
 
+    // Đảm bảo bảng Reviews tồn tại nếu chưa có (tạo nhanh không cần migration mới)
+    try
+    {
+        using var createCmd = context.Database.GetDbConnection().CreateCommand();
+        createCmd.CommandText = @"
+            CREATE TABLE IF NOT EXISTS \"Reviews\" (
+                \"Id\" text PRIMARY KEY,
+                \"CustomerId\" text NULL,
+                \"ItemDetailId\" text NULL,
+                \"Rating\" double precision NOT NULL,
+                \"Contents\" text NULL,
+                \"ImgUrl\" text NULL,
+                \"Type\" integer NOT NULL,
+                \"CreatedBy\" text NULL,
+                \"UpdatedBy\" text NULL,
+                \"DeletedBy\" text NULL,
+                \"CreatedAt\" timestamp with time zone NULL,
+                \"UpdatedAt\" timestamp with time zone NULL,
+                \"DeleteAt\" timestamp with time zone NULL
+            );";
+        context.Database.OpenConnection();
+        createCmd.ExecuteNonQuery();
+        context.Database.CloseConnection();
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Error ensuring Reviews table exists: {Message}", ex.Message);
+    }
+
     // Log tên các cột thực tế trong database để debug
     try
     {
