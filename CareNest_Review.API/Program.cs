@@ -31,20 +31,37 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
-// Lấy DatabaseSettings từ ENV trước, fallback cấu hình
+// Ưu tiên dùng DATABASE_URL; nếu không có thì fallback cấu hình DB_*
 var config = builder.Configuration;
-DatabaseSettings dbSettings = new DatabaseSettings
+string? databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+string connectionString;
+if (!string.IsNullOrWhiteSpace(databaseUrl))
 {
-    Ip       = Environment.GetEnvironmentVariable("DB_HOST") ?? config["DatabaseSettings:Ip"],
-    Port     = int.TryParse(Environment.GetEnvironmentVariable("DB_PORT"), out var port)
-                ? port
-                : (config.GetSection("DatabaseSettings").GetValue<int?>("Port") ?? 5432),
-    User     = Environment.GetEnvironmentVariable("DB_USER") ?? config["DatabaseSettings:User"],
-    Password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? config["DatabaseSettings:Password"],
-    Database = Environment.GetEnvironmentVariable("DB_NAME") ?? config["DatabaseSettings:Database"]
-};
-dbSettings.Display();
-string connectionString = dbSettings.GetConnectionString() + ";Pooling=true;Maximum Pool Size=5;Minimum Pool Size=0;Timeout=15;";
+    var uri = new Uri(databaseUrl);
+    var userInfoParts = uri.UserInfo.Split(':', 2);
+    var username = Uri.UnescapeDataString(userInfoParts.ElementAtOrDefault(0) ?? string.Empty);
+    var password = Uri.UnescapeDataString(userInfoParts.ElementAtOrDefault(1) ?? string.Empty);
+    var host = uri.Host;
+    var port = uri.IsDefaultPort ? 5432 : uri.Port;
+    var database = uri.AbsolutePath.TrimStart('/');
+
+    connectionString = $"Host={host};Port={port};Database={database};Username={username};Password={password};Ssl Mode=Require;Trust Server Certificate=true;Pooling=true;Maximum Pool Size=5;Minimum Pool Size=0;Timeout=15;";
+}
+else
+{
+    DatabaseSettings dbSettings = new DatabaseSettings
+    {
+        Ip       = Environment.GetEnvironmentVariable("DB_HOST") ?? config["DatabaseSettings:Ip"],
+        Port     = int.TryParse(Environment.GetEnvironmentVariable("DB_PORT"), out var port)
+                    ? port
+                    : (config.GetSection("DatabaseSettings").GetValue<int?>("Port") ?? 5432),
+        User     = Environment.GetEnvironmentVariable("DB_USER") ?? config["DatabaseSettings:User"],
+        Password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? config["DatabaseSettings:Password"],
+        Database = Environment.GetEnvironmentVariable("DB_NAME") ?? config["DatabaseSettings:Database"]
+    };
+    dbSettings.Display();
+    connectionString = dbSettings.GetConnectionString() + ";Pooling=true;Maximum Pool Size=5;Minimum Pool Size=0;Timeout=15;";
+}
 
 
 // Đăng ký DbContext với PostgreSQL
