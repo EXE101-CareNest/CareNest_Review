@@ -184,20 +184,20 @@ using (var scope = app.Services.CreateScope())
     {
         using var createCmd = context.Database.GetDbConnection().CreateCommand();
         createCmd.CommandText = @"
-            CREATE TABLE IF NOT EXISTS \"Reviews\" (
-                \"Id\" text PRIMARY KEY,
-                \"CustomerId\" text NULL,
-                \"ItemDetailId\" text NULL,
-                \"Rating\" double precision NOT NULL,
-                \"Contents\" text NULL,
-                \"ImgUrl\" text NULL,
-                \"Type\" integer NOT NULL,
-                \"CreatedBy\" text NULL,
-                \"UpdatedBy\" text NULL,
-                \"DeletedBy\" text NULL,
-                \"CreatedAt\" timestamp with time zone NULL,
-                \"UpdatedAt\" timestamp with time zone NULL,
-                \"DeleteAt\" timestamp with time zone NULL
+            CREATE TABLE IF NOT EXISTS ""Reviews"" (
+                ""Id"" text PRIMARY KEY,
+                ""CustomerId"" text NULL,
+                ""ItemDetailId"" text NULL,
+                ""Rating"" double precision NOT NULL,
+                ""Contents"" text NULL,
+                ""ImgUrl"" text NULL,
+                ""Type"" integer NOT NULL,
+                ""CreatedBy"" text NULL,
+                ""UpdatedBy"" text NULL,
+                ""DeletedBy"" text NULL,
+                ""CreatedAt"" timestamp with time zone NULL,
+                ""UpdatedAt"" timestamp with time zone NULL,
+                ""DeleteAt"" timestamp with time zone NULL
             );";
         context.Database.OpenConnection();
         createCmd.ExecuteNonQuery();
