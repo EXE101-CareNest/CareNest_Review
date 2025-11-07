@@ -131,7 +131,21 @@ builder.Services.Configure<RouteOptions>(options =>
     options.LowercaseUrls = true;
 });
 
-builder.Services.Configure<APIServiceOption>(builder.Configuration.GetSection("APIService"));
+// Bind options từ appsettings, sau đó override bằng ENV (BASE_URL_*) nếu có
+builder.Services.Configure<APIServiceOption>(options =>
+{
+    var section = builder.Configuration.GetSection("APIService");
+    options.BaseUrlAccount        = section["BaseUrlAccount"]        ?? string.Empty;
+    options.BaseUrlServiceDetail  = section["BaseUrlServiceDetail"]  ?? string.Empty;
+    options.BaseUrlProductService = section["BaseUrlProductService"] ?? string.Empty;
+    options.BaseUrlOrder          = section["BaseUrlOrder"]          ?? string.Empty;
+
+    // ENV trên Railway
+    options.BaseUrlAccount        = Environment.GetEnvironmentVariable("BASE_URL_ACCOUNT")        ?? options.BaseUrlAccount;
+    options.BaseUrlServiceDetail  = Environment.GetEnvironmentVariable("BASE_URL_SERVICE")        ?? options.BaseUrlServiceDetail;
+    options.BaseUrlProductService = Environment.GetEnvironmentVariable("BASE_URL_PRODUCTSERVICE") ?? options.BaseUrlProductService;
+    options.BaseUrlOrder          = Environment.GetEnvironmentVariable("BASE_URL_ORDER")          ?? options.BaseUrlOrder;
+});
 
 builder.Services.AddHttpClient();
 
