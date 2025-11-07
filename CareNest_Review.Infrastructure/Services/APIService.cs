@@ -71,6 +71,22 @@ namespace CareNest_Review.Infrastructure.Services
                         return new ResponseResult<T>(result.Success, result, result.Message, result.Success ? null : (int)response.StatusCode);
                     }
 
+                    // Hỗ trợ API trả về trực tiếp T mà không có envelope
+                    if (!string.IsNullOrWhiteSpace(jsonResponse))
+                    {
+                        T? direct = JsonSerializer.Deserialize<T>(jsonResponse, options);
+                        bool hasValue = direct != null || typeof(T).IsValueType;
+                        if (hasValue)
+                        {
+                            return new ResponseResult<T>
+                            {
+                                IsSuccess = true,
+                                Data = new ApiResponse<T>(true, "Request successful.", direct),
+                                Message = "Request successful."
+                            };
+                        }
+                    }
+
                     return new ResponseResult<T>
                     {
                         IsSuccess = false,
