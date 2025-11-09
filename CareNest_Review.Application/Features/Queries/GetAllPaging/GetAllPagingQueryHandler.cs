@@ -23,7 +23,6 @@ namespace CareNest_Review.Application.Features.Queries.GetAllPaging
 
         public async Task<PageResult<ReviewResponse>> HandleAsync(GetAllPagingQuery query)
         {
-            Expression<Func<Review, bool>>? predicate = null;
             // Auto-infer Type=3 when Order filters are provided without Type
             if ((query.OrderIds != null && query.OrderIds.Any()) || !string.IsNullOrWhiteSpace(query.OrderId))
             {
@@ -32,19 +31,9 @@ namespace CareNest_Review.Application.Features.Queries.GetAllPaging
                     query.Type = 3;
                 }
             }
-            if (!string.IsNullOrWhiteSpace(query.CustomerId))
-            {
-                predicate = ad => ad.CustomerId.Contains(query.CustomerId);
-            }
-            if (!string.IsNullOrWhiteSpace(query.ProductDetailId))
-            {
-                predicate = ad => ad.ItemDetailId.Contains(query.ProductDetailId) && ad.Type == 2;
-            }
-            if (!string.IsNullOrWhiteSpace(query.ServiceDetailId))
-            {
-                predicate = ad => ad.ItemDetailId.Contains(query.ServiceDetailId) && ad.Type == 1;
-            }
-            // Order filters (Type must be 3)
+
+            // Prepare OrderId list if needed
+            List<string>? orderIdList = null;
             if (!string.IsNullOrWhiteSpace(query.OrderId) || (query.OrderIds != null && query.OrderIds.Any()))
             {
                 var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -59,18 +48,27 @@ namespace CareNest_Review.Application.Features.Queries.GetAllPaging
                 {
                     set.Add(query.OrderId);
                 }
-                var list = set.ToList();
-                predicate = ad => list.Contains(ad.ItemDetailId!) && ad.Type == 3;
+                orderIdList = set.ToList();
             }
-            if (query.Type != null)
-            {
-                predicate = ad => ad.Type.Equals(query.Type);
-            }
+
+            // Build predicate with all conditions combined
+            Expression<Func<Review, bool>> predicate = ad =>
+                // Type filter
+                (query.Type == null || ad.Type == query.Type.Value) &&
+                // CustomerId filter
+                (string.IsNullOrWhiteSpace(query.CustomerId) || (ad.CustomerId != null && ad.CustomerId.Contains(query.CustomerId))) &&
+                // ProductDetailId filter (Type must be 2)
+                (string.IsNullOrWhiteSpace(query.ProductDetailId) || (ad.ItemDetailId != null && ad.ItemDetailId.Contains(query.ProductDetailId) && ad.Type == 2)) &&
+                // ServiceDetailId filter (Type must be 1)
+                (string.IsNullOrWhiteSpace(query.ServiceDetailId) || (ad.ItemDetailId != null && ad.ItemDetailId.Contains(query.ServiceDetailId) && ad.Type == 1)) &&
+                // Order filters (Type must be 3)
+                (orderIdList == null || (ad.ItemDetailId != null && orderIdList.Contains(ad.ItemDetailId) && ad.Type == 3));
+
             var selector = ObjectMapperExtensions.CreateMapExpression<Review, ReviewResponse>();
 
             var orderByFunc = GetOrderByFunc(query.SortColumn, query.SortDirection);
 
-            var totalItems = await _unitOfWork.GetRepository<Review>().CountAsync(null);
+            var totalItems = await _unitOfWork.GetRepository<Review>().CountAsync(predicate);
 
             IEnumerable<ReviewResponse> appointments = await _unitOfWork.GetRepository<Review>().FindAsync(
                 predicate: predicate,
